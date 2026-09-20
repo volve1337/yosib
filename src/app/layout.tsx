@@ -52,8 +52,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "YosiBreak | Stream Unlimited Movies & TV Shows Online Free",
-    description: "Unlimited movies and TV shows for free. Premium streaming experience.",
+    title: "YosiBreak | Stream Unlimited Movies & TV Shows Online",
+    description: "Unlimited movies and TV shows. Premium streaming experience.",
     images: ["/icon-512.png"],
     creator: "@yosibreak",
   },
