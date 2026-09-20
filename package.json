@@ -2,15 +2,13 @@
   "name": "yosibreak",
   "version": "0.1.0",
   "private": true,
-  "main": "electron/main.cjs",
   "scripts": {
     "dev": "next dev",
     "dev:clean": "npm run clean && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "clean": "node -e \"require('node:fs').rmSync('.next',{recursive:true,force:true})\"",
-    "dist" : "npm run build && electron-builder --win nsis"
+    "clean": "node -e \"require('node:fs').rmSync('.next',{recursive:true,force:true})\""
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.116.0",
@@ -23,52 +21,12 @@
     "react-dom": "^19.2.6",
     "tailwind-merge": "^3.4.1"
   },
-  "build": {
-  "appId": "com.yosibreak.desktop",
-  "productName": "YosiBreak",
-  "asar": true,
-  "directories": {
-    "output": "dist"
-  },
-  "files": [
-    "electron/**/*",
-    "package.json"
-  ],
-  "extraResources": [
-    {
-      "from": ".next/standalone",
-      "to": "server",
-      "filter": ["**/*"]
-    },
-    {
-      "from": ".next/static",
-      "to": "server/.next/static",
-      "filter": ["**/*"]
-    },
-    {
-      "from": "public",
-      "to": "server/public",
-      "filter": ["**/*"]
-    }
-  ],
-  "win": {
-    "target": "nsis",
-    "artifactName": "YosiBreak-Setup-${version}.${ext}"
-  },
-  "nsis": {
-    "oneClick": false,
-    "allowToChangeInstallationDirectory": true
-  }
-
-  },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^25.9.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "babel-plugin-react-compiler": "1.0.0",
-    "electron": "^44.4.3",
-    "electron-builder": "^26.15.3",
     "enhanced-resolve": "^5.22.1",
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.2.6",

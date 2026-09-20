@@ -15,11 +15,11 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://yb.xyz"),
   title: {
-    default: "YosiBreak | Stream Unlimited Movies & TV Shows Online",
+    default: "YosiBreak | Stream Unlimited Movies & TV Shows Online Free",
     template: "%s | YosiBreak"
   },
-  description: "Unlimited movies and TV shows. Inspired by Prime Video aesthetics, YosiBreak offers a premium streaming experience.",
-  keywords: ["movies", "tv shows", "streaming", "watch online", "yosibreak", "meowtv"],
+  description: "Unlimited movies and TV shows for free. Inspired by Prime Video aesthetics, YosiBreak offers a premium streaming experience.",
+  keywords: ["movies", "tv shows", "streaming", "free movies", "watch online", "yosibreak", "meowtv"],
   authors: [{ name: "YosiBreak Team" }],
   creator: "YosiBreak",
   publisher: "YosiBreak",
@@ -39,8 +39,8 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://yb.xyz",
     siteName: "YosiBreak",
-    title: "YosiBreak | Stream Unlimited Movies & TV Shows Online",
-    description: "Unlimited movies and TV show. Premium streaming experience with no ads.",
+    title: "YosiBreak | Stream Unlimited Movies & TV Shows Online Free",
+    description: "Unlimited movies and TV shows for free. Premium streaming experience with no ads.",
     images: [
       {
         url: "/icon-512.png",
@@ -52,8 +52,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "YosiBreak | Stream Unlimited Movies & TV Shows Online",
-    description: "Unlimited movies and TV shows. Premium streaming experience.",
+    title: "YosiBreak | Stream Unlimited Movies & TV Shows Online Free",
+    description: "Unlimited movies and TV shows for free. Premium streaming experience.",
     images: ["/icon-512.png"],
     creator: "@yosibreak",
   },

@@ -42,7 +42,7 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen pb-20 overflow-x-hidden">
-      <h1 className="sr-only">YosiBreak | Watch Movies & TV Shows Online</h1>
+      <h1 className="sr-only">YosiBreak | Watch Movies & TV Shows Online Free</h1>
 
       {heroMovies && heroMovies.length > 0 && <Hero movies={heroMovies as any} />}
 
@@ -58,6 +58,57 @@ export default async function Home() {
       </div>
 
       {/* SEO Rich Text Content Section */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20 md:mt-32 space-y-16 border-t border-white/5 pt-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+          <div className="space-y-6">
+            <h2 className="text-3xl font-black text-white tracking-tight">
+              Unlimited Streaming, Reimagined
+            </h2>
+            <p className="text-gray-400 leading-relaxed text-lg">
+              YosiBreak is your premier destination for discovering and watching the latest movies and TV shows online for free. 
+              Our platform is designed with a premium aesthetic inspired by industry leaders, ensuring that your viewing experience is not just about the content, but also about the journey. 
+              With a vast library powered by TMDB, you have access to millions of titles, from timeless classics to the latest blockbusters.
+            </p>
+            <p className="text-gray-400 leading-relaxed text-lg">
+              Whether you're looking for action-packed adventures, heart-wrenching dramas, or side-splitting comedies, YosiBreak's intuitive categorization and powerful search engine make it easy to find exactly what you're in the mood for. 
+              Enjoy high-definition streaming on any device, anywhere, anytime.
+            </p>
+          </div>
+          
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-8 space-y-8">
+            <h3 className="text-xl font-bold text-white border-b border-white/10 pb-4">
+              Frequently Asked Questions
+            </h3>
+            <div className="space-y-6">
+              <div>
+                <h4 className="text-white font-semibold mb-2">Is YosiBreak free to use?</h4>
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  Yes, YosiBreak is completely free to use. We don't require any subscriptions or hidden fees to access our library.
+                </p>
+              </div>
+              <div>
+                <h4 className="text-white font-semibold mb-2">Do I need to create an account?</h4>
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  No account is necessary. You can start watching immediately without providing any personal information.
+                </p>
+              </div>
+              <div>
+                <h4 className="text-white font-semibold mb-2">What devices are supported?</h4>
+                <p className="text-gray-400 text-sm leading-relaxed">
+                  YosiBreak is fully responsive and works on desktops, tablets, and smartphones. It's also optimized for casting to larger screens.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="text-center max-w-3xl mx-auto space-y-4 pb-10">
+          <h2 className="text-2xl font-bold text-white">Join Millions of Movie Lovers</h2>
+          <p className="text-gray-400">
+            Start your cinematic journey with YosiBreak today. Discover new favorites, build your watchlist, and enjoy a premium streaming experience that respects your time and your privacy.
+          </p>
+        </div>
+      </div>
     </main>
   );
 }
