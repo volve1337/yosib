@@ -80,6 +80,7 @@ import PageTransition from "@/components/PageTransition";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { AuthProvider } from "@/components/auth/AuthProvider";
+import { Analytics } from "@vercel/analytics/next";
 
 import ClientOnlyComponents from "@/components/ClientOnlyComponents";
 
@@ -146,6 +147,7 @@ export default function RootLayout({
           <Footer />
           <ClientOnlyComponents />
         </AuthProvider>
+        <Analytics />
       </body>
     </html>
   );
