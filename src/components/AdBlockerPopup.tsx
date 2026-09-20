@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Shield, X, ExternalLink, Sparkles, Check, Monitor, Smartphone, Copy } from "lucide-react";
+import { AdblockDetector } from "adblock-detector";
 import { cn } from "@/lib/utils";
 const AdGuardLogo = () => (
     <svg className="w-7 h-7" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -32,26 +33,34 @@ export default function AdBlockerPopup() {
     const [copied, setCopied] = useState(false);
 
     useEffect(() => {
-        // 1. Detect Device Type (Desktop vs Mobile)
-        if (typeof window !== "undefined") {
-            const ua = navigator.userAgent.toLowerCase();
-            const isMobileUA = /mobile|android|iphone|ipad|phone/i.test(ua);
-            const isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-            
-            if (isMobileUA || (isTouch && window.innerWidth < 1024)) {
-                setActiveTab("mobile");
-            } else {
-                setActiveTab("desktop");
-            }
+        if (typeof window === "undefined") return;
+
+        const ua = navigator.userAgent.toLowerCase();
+        const isMobileUA = /mobile|android|iphone|ipad|phone/i.test(ua);
+        const isTouch = ("ontouchstart" in window) || (navigator.maxTouchPoints > 0);
+        const isDesktop = !isMobileUA && !isTouch;
+        if (isMobileUA || (isTouch && window.innerWidth < 1024)) {
+            setActiveTab("mobile");
+        } else {
+            setActiveTab("desktop");
         }
 
-        // 2. Check if the user has already dismissed the popup
-        const isDismissed = localStorage.getItem("yosibreak_adblock_dismissed");
-        if (isDismissed !== "true") {
+        const isDismissed = localStorage.getItem("yosibreak_adblock_dismissed") === "true";
+        if (isDismissed) return;
+
+        try {
+            const detector = new AdblockDetector();
+            const hasAdblock = detector.detect();
+
+            if (!hasAdblock) return;
+
             const timer = setTimeout(() => {
                 setIsOpen(true);
-            }, 2500); // Elegant delay of 2.5s after site loads
+            }, 1500);
+
             return () => clearTimeout(timer);
+        } catch {
+            return;
         }
     }, []);
 

@@ -19,25 +19,36 @@ interface VideoPlayerProps {
 }
 
 const SERVERS = [
+    
     {
-        name: "volve",
-        movie: (id: string) => `https://embed.vidrift.in/embed/movie/${id}?brand=YosiBreak`,
-        show: (id: string, s: number, e: number) => `https://embed.vidrift.in/embed/tv/${id}/${s}/${e}?brand=YosiBreak`,
-        useSandbox: false
+        name: "volve - no ads",
+        movie: (id: string) => `https://player.cinezo.live/embed/movie/${id}?autoplay=false&poster=true&chromecast=true&servericon=true&setting=true&pip=true&font=Roboto&fontcolor=ffffff&fontsize=20&opacity=0.5&primarycolor=ffffff&secondarycolor=0a0a0a&iconcolor=ffffff`,
+        show: (id: string, s: number, e: number) => `https://player.cinezo.live/embed/tv/${id}/${s}/${e}?autoplay=false&poster=true&chromecast=true&servericon=true&setting=true&pip=true&font=Roboto&fontcolor=ffffff&fontsize=20&opacity=0.5&primarycolor=ffffff&secondarycolor=0a0a0a&iconcolor=ffffff`,
+        useSandbox: true
     },
     {
-        name: "faggzz",
+        name: "faggzz - use adblock",
         movie: (id: string) => `https://vidfast.net/movie/${id}`,
         show: (id: string, s: number, e: number) => `https://vidfast.net/tv/${id}/${s}/${e}`,
         useSandbox: false
     },
+   {
+        name: "gotem - use adblock",
+        movie: (id: string) => `https://vidrock.net/embed/movie/${id}`,
+        show: (id: string, s: number, e: number) => `https://vidrock.net/embed/tv/${id}/${s}/${e}`,
+        useSandbox: false
+    },
     {
-        name: "fubar",
+        name: "fubar - use adblock",
         movie: (id: string) => `https://www.2embed.skin/embed/${id}`,
         show: (id: string, s: number, e: number) => `https://www.2embed.skin/embedtv/${id}&s=${s}&e=${e}`,
         useSandbox: false
     },
-   /* {
+
+
+    
+    /*
+    {
         name: "yb1",
         movie: (id: string) => `https://www.vidy.st/movie/${id}?color=DC2626`,
         show: (id: string, s: number, e: number) => `https://www.vidy.st/tv/${id}/${s}/${e}?color=DC2626&nextEpisode=true&episodeSelector=true`,
@@ -386,7 +397,7 @@ export default function VideoPlayer({
                 <div className="flex items-center space-x-2 overflow-x-auto scrollbar-hide py-1">
                     <div className="flex items-center text-gray-400 mr-2">
                         <Server className="h-4 w-4 mr-1" />
-                        <span className="text-xs font-bold uppercase whitespace-nowrap">Auto Source</span>
+                        <span className="text-xs font-bold uppercase whitespace-nowrap">Servers</span>
                     </div>
                     <div className="flex items-center bg-prime-hover rounded-lg p-1">
                         {SERVERS.map((server, idx) => (

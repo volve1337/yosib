@@ -3,6 +3,7 @@ import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { Suspense } from "react";
 
+
 const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 export const viewport: Viewport = {
