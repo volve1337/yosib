@@ -10,10 +10,11 @@
     "start": "next start",
     "lint": "eslint",
     "clean": "node -e \"require('node:fs').rmSync('.next',{recursive:true,force:true})\"",
-    "dist" : "npm run build && electron-builder --win nsis"
+    "dist": "npm run build && electron-builder --win nsis"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.116.0",
+    "@vercel/analytics": "^2.0.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.34.2",
     "got-scraping": "^4.2.1",
@@ -24,42 +25,47 @@
     "tailwind-merge": "^3.4.1"
   },
   "build": {
-  "appId": "com.yosibreak.desktop",
-  "productName": "YosiBreak",
-  "asar": true,
-  "directories": {
-    "output": "dist"
-  },
-  "files": [
-    "electron/**/*",
-    "package.json"
-  ],
-  "extraResources": [
-    {
-      "from": ".next/standalone",
-      "to": "server",
-      "filter": ["**/*"]
+    "appId": "com.yosibreak.desktop",
+    "productName": "YosiBreak",
+    "asar": true,
+    "directories": {
+      "output": "dist"
     },
-    {
-      "from": ".next/static",
-      "to": "server/.next/static",
-      "filter": ["**/*"]
+    "files": [
+      "electron/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": ".next/standalone",
+        "to": "server",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": ".next/static",
+        "to": "server/.next/static",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "public",
+        "to": "server/public",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "artifactName": "YosiBreak-Setup-${version}.${ext}"
     },
-    {
-      "from": "public",
-      "to": "server/public",
-      "filter": ["**/*"]
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
     }
-  ],
-  "win": {
-    "target": "nsis",
-    "artifactName": "YosiBreak-Setup-${version}.${ext}"
-  },
-  "nsis": {
-    "oneClick": false,
-    "allowToChangeInstallationDirectory": true
-  }
-
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
