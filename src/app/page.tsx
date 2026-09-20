@@ -4,7 +4,6 @@ import { tmdb } from "@/lib/tmdb";
 import RecentlyPlayedRow from "@/components/RecentlyPlayedRow";
 import InfiniteGenres from "@/components/InfiniteGenres";
 import { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/next"
 
 export const metadata: Metadata = {
   alternates: {
