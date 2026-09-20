@@ -1,0 +1,341 @@
+"use client";
+
+import React, { useRef } from "react";
+import Link from "next/link";
+import { ChevronLeft, ChevronRight, Flame, History, Award, Star, Tv, Zap, Smile, Ghost, Sparkles, Heart, Film, Radio, Calendar, Compass, Fingerprint, Cat, Eye, Music, Globe, Map, Swords } from "lucide-react";
+import MovieCard from "./MovieCard";
+import { Movie } from "@/lib/tmdb";
+import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
+
+interface MovieRowProps {
+    title: string;
+    movies: Movie[];
+    className?: string;
+    cardClassName?: string;
+    isResume?: boolean;
+    onRemove?: (id: string, type: string) => void;
+    seeAllUrl?: string;
+}
+
+const getHeaderConfig = (title: string) => {
+    const lowerTitle = title.toLowerCase();
+
+    if (lowerTitle.includes("recent")) {
+        return {
+            gradient: "from-neutral-400 via-sky-400 to-neutral-400",
+            icon: <History className="h-5 w-5 md:h-6 md:w-6 text-neutral-400 group-hover/header:rotate-[-45deg] transition-transform duration-500" />,
+            badge: { text: "RESUME", bg: "bg-neutral-500/10 text-neutral-400 border border-neutral-500/20" }
+        };
+    }
+    if (lowerTitle.includes("trending")) {
+        return {
+            gradient: "from-neutral-500 via-neutral-500 to-neutral-500",
+            icon: <Flame className="h-5 w-5 md:h-6 md:w-6 text-neutral-500 group-hover/header:scale-125 transition-transform duration-300 animate-pulse" />,
+            badge: { text: "HOT", bg: "bg-neutral-500/10 text-neutral-400 border border-neutral-500/20" }
+        };
+    }
+    if (lowerTitle.includes("popular")) {
+        return {
+            gradient: "from-fuchsia-400 via-neutral-400 to-neutral-400",
+            icon: <Award className="h-5 w-5 md:h-6 md:w-6 text-neutral-400 group-hover/header:rotate-[15deg] transition-transform duration-300" />,
+            badge: { text: "POPULAR", bg: "bg-neutral-500/10 text-neutral-400 border border-neutral-500/20" }
+        };
+    }
+    if (lowerTitle.includes("rated") || lowerTitle.includes("top")) {
+        return {
+            gradient: "from-neutral-200 via-neutral-400 to-neutral-500",
+            icon: <Star className="h-5 w-5 md:h-6 md:w-6 text-neutral-400 fill-neutral-400/20 group-hover/header:scale-125 transition-transform duration-300" />,
+            badge: { text: "MUST WATCH", bg: "bg-neutral-500/10 text-neutral-400 border border-neutral-500/20" }
+        };
+    }
+    if (lowerTitle.includes("tv")) {
+        return {
+            gradient: "from-neutral-400 via-neutral-400 to-fuchsia-400",
+            icon: <Tv className="h-5 w-5 md:h-6 md:w-6 text-neutral-400 group-hover/header:scale-110 transition-transform duration-300" />,
+            badge: { text: "SERIES", bg: "bg-neutral-500/10 text-neutral-400 border border-neutral-500/20" }
+        };
+    }
+    if (lowerTitle.includes("action")) {
+        return {
+            gradient: "from-neutral-400 via-neutral-500 to-neutral-600",
+            icon: <Zap className="h-5 w-5 md:h-6 md:w-6 text-neutral-400 group-hover/header:scale-125 transition-transform duration-300 animate-pulse" />,
+            badge: { text: "BLOCKBUSTERS", bg: "bg-neutral-500/10 text-neutral-400 border border-neutral-500/20" }
+        };
+    }
+    if (lowerTitle.includes("comedy")) {
+        return {
+            gradient: "from-neutral-400 via-neutral-400 to-neutral-500",
+            icon: <Smile className="h-5 w-5 md:h-6 md:w-6 text-neutral-400 group-hover/header:scale-110 transition-transform duration-300" />,
+            badge: { text: "FUNNY", bg: "bg-neutral-500/10 text-neutral-400 border border-neutral-500/20" }
+        };
+    }
+    if (lowerTitle.includes("horror")) {
+        return {
+            gradient: "from-neutral-600 via-neutral-700 to-neutral-950",
+            icon: <Ghost className="h-5 w-5 md:h-6 md:w-6 text-neutral-500 group-hover/header:scale-110 group-hover/header:translate-y-[-4px] transition-transform duration-300" />,
+            badge: { text: "SPOOKY", bg: "bg-neutral-900/20 text-neutral-500 border border-neutral-900/30" }
+        };
+    }
+    if (lowerTitle.includes("sci-fi") || lowerTitle.includes("fantasy")) {
+        return {
+            gradient: "from-sky-400 via-neutral-400 to-fuchsia-500",
+            icon: <Sparkles className="h-5 w-5 md:h-6 md:w-6 text-neutral-400 group-hover/header:scale-125 transition-transform duration-300 animate-pulse" />,
+            badge: { text: "FANTASY", bg: "bg-neutral-500/10 text-neutral-400 border border-neutral-500/20" }
+        };
+    }
+    if (lowerTitle.includes("adventure")) {
+        return {
+            gradient: "from-neutral-400 via-lime-400 to-neutral-500",
+            icon: <Compass className="h-5 w-5 md:h-6 md:w-6 text-neutral-400 group-hover/header:rotate-[90deg] transition-transform duration-500" />,
+            badge: { text: "QUEST", bg: "bg-neutral-500/10 text-neutral-400 border border-neutral-500/20" }
+        };
+    }
+    if (lowerTitle.includes("drama")) {
+        return {
+            gradient: "from-neutral-400 via-neutral-400 to-neutral-500",
+            icon: <Heart className="h-5 w-5 md:h-6 md:w-6 text-neutral-400 fill-neutral-400/10 group-hover/header:scale-110 transition-transform duration-300" />,
+            badge: { text: "DRAMATIC", bg: "bg-neutral-500/10 text-neutral-400 border border-neutral-500/20" }
+        };
+    }
+    if (lowerTitle.includes("crime")) {
+        return {
+            gradient: "from-slate-400 via-zinc-500 to-neutral-700",
+            icon: <Fingerprint className="h-5 w-5 md:h-6 md:w-6 text-zinc-400 group-hover/header:scale-125 transition-transform duration-300" />,
+            badge: { text: "THRILLING", bg: "bg-zinc-500/10 text-zinc-400 border border-zinc-500/20" }
+        };
+    }
+    if (lowerTitle.includes("animated")) {
+        return {
+            gradient: "from-neutral-400 via-neutral-400 to-neutral-400",
+            icon: <Cat className="h-5 w-5 md:h-6 md:w-6 text-neutral-400 group-hover/header:bounce transition-transform duration-300" />,
+            badge: { text: "YB COSY", bg: "bg-neutral-500/10 text-neutral-400 border border-neutral-500/20" }
+        };
+    }
+    if (lowerTitle.includes("mystery")) {
+        return {
+            gradient: "from-neutral-500 via-neutral-600 to-slate-900",
+            icon: <Eye className="h-5 w-5 md:h-6 md:w-6 text-neutral-400 group-hover/header:scale-110 transition-transform duration-300" />,
+            badge: { text: "SUSPENSE", bg: "bg-neutral-500/10 text-neutral-400 border border-neutral-500/20" }
+        };
+    }
+    if (lowerTitle.includes("romantic") || lowerTitle.includes("romance")) {
+        return {
+            gradient: "from-neutral-300 via-neutral-400 to-neutral-500",
+            icon: <Heart className="h-5 w-5 md:h-6 md:w-6 text-neutral-400 fill-neutral-400/20 group-hover/header:scale-125 transition-transform duration-300" />,
+            badge: { text: "LOVE", bg: "bg-neutral-500/10 text-neutral-400 border border-neutral-500/20" }
+        };
+    }
+    if (lowerTitle.includes("documentar")) {
+        return {
+            gradient: "from-neutral-400 via-neutral-400 to-sky-500",
+            icon: <Globe className="h-5 w-5 md:h-6 md:w-6 text-neutral-400 group-hover/header:rotate-[45deg] transition-transform duration-500" />,
+            badge: { text: "INSIGHTS", bg: "bg-neutral-500/10 text-neutral-400 border border-neutral-500/20" }
+        };
+    }
+    if (lowerTitle.includes("west")) {
+        return {
+            gradient: "from-neutral-600 via-neutral-700 to-neutral-800",
+            icon: <Map className="h-5 w-5 md:h-6 md:w-6 text-neutral-500 group-hover/header:translate-x-1 transition-transform duration-300" />,
+            badge: { text: "WESTERN", bg: "bg-neutral-500/10 text-neutral-500 border border-neutral-500/20" }
+        };
+    }
+    if (lowerTitle.includes("musical")) {
+        return {
+            gradient: "from-neutral-400 via-neutral-400 to-neutral-500",
+            icon: <Music className="h-5 w-5 md:h-6 md:w-6 text-neutral-400 group-hover/header:scale-125 transition-transform duration-300" />,
+            badge: { text: "MELODY", bg: "bg-neutral-500/10 text-neutral-400 border border-neutral-500/20" }
+        };
+    }
+    if (lowerTitle.includes("war") || lowerTitle.includes("historic")) {
+        return {
+            gradient: "from-neutral-500 via-zinc-600 to-zinc-800",
+            icon: <Swords className="h-5 w-5 md:h-6 md:w-6 text-neutral-400 group-hover/header:rotate-12 transition-transform duration-300" />,
+            badge: { text: "HISTORY", bg: "bg-neutral-500/10 text-neutral-400 border border-neutral-500/20" }
+        };
+    }
+    if (lowerTitle.includes("airing today")) {
+        return {
+            gradient: "from-neutral-400 via-neutral-400 to-neutral-400",
+            icon: <Calendar className="h-5 w-5 md:h-6 md:w-6 text-neutral-400 group-hover/header:scale-110 transition-transform duration-300" />,
+            badge: { text: "TONIGHT", bg: "bg-neutral-500/10 text-neutral-400 border border-neutral-500/20" }
+        };
+    }
+    if (lowerTitle.includes("air") || lowerTitle.includes("live")) {
+        return {
+            gradient: "from-neutral-400 via-neutral-400 to-neutral-400",
+            icon: <Radio className="h-5 w-5 md:h-6 md:w-6 text-neutral-400 group-hover/header:scale-110 transition-transform duration-300" />,
+            badge: { text: "LIVE", bg: "bg-neutral-500/10 text-neutral-400 border border-neutral-500/20" }
+        };
+    }
+    if (lowerTitle.includes("theaters") || lowerTitle.includes("now playing")) {
+        return {
+            gradient: "from-neutral-400 via-neutral-400 to-neutral-400",
+            icon: <Film className="h-5 w-5 md:h-6 md:w-6 text-neutral-400 group-hover/header:rotate-[15deg] transition-transform duration-300" />,
+            badge: { text: "IN THEATERS", bg: "bg-neutral-500/10 text-neutral-400 border border-neutral-500/20" }
+        };
+    }
+    if (lowerTitle.includes("upcoming") || lowerTitle.includes("anticipated")) {
+        return {
+            gradient: "from-neutral-300 via-neutral-400 to-neutral-500",
+            icon: <Sparkles className="h-5 w-5 md:h-6 md:w-6 text-neutral-400 group-hover/header:scale-125 transition-transform duration-300 animate-pulse" />,
+            badge: { text: "SOON", bg: "bg-neutral-500/10 text-neutral-400 border border-neutral-500/20" }
+        };
+    }
+
+    return {
+        gradient: "from-white via-white to-neutral-400",
+        icon: null,
+        badge: null
+    };
+};
+
+const getSeeAllUrl = (title: string): string | null => {
+    const lower = title.toLowerCase().trim();
+
+    // 1. Core Pages Mapping
+    if (lower === "popular movies") return "/movies";
+    if (lower === "tv shows" || lower === "popular series") return "/tv";
+    if (lower === "my list" || lower === "watchlist") return "/watchlist";
+
+    // 2. Movie Genre Pages (from homepage, categories page, movies page)
+    if (lower === "action blockbusters" || lower === "action movies") {
+        return "/categories/28?name=Action&type=movie";
+    }
+    if (lower === "comedy hits" || lower === "comedy movies") {
+        return "/categories/35?name=Comedy&type=movie";
+    }
+    if (lower === "horror movies" || lower === "chilling horror") {
+        return "/categories/27?name=Horror&type=movie";
+    }
+    if (lower === "animation favorites" || lower === "animated wonders") {
+        return "/categories/16?name=Animation&type=movie";
+    }
+    if (lower === "drama series" || lower === "gripping dramas" || lower === "drama movies") {
+        return "/categories/18?name=Drama&type=tv";
+    }
+    if (lower === "sci-fi & fantasy") {
+        return "/categories/10765?name=Sci-Fi%20%26%20Fantasy&type=tv";
+    }
+    if (lower === "adventure quests") {
+        return "/categories/12?name=Adventure&type=movie";
+    }
+    if (lower === "crime thrillers") {
+        return "/categories/80?name=Crime&type=movie";
+    }
+    if (lower === "mystery & suspense") {
+        return "/categories/9648?name=Mystery&type=movie";
+    }
+    if (lower === "romantic getaways") {
+        return "/categories/10749?name=Romance&type=movie";
+    }
+    if (lower === "reality obsessions") {
+        return "/categories/10764?name=Reality&type=tv";
+    }
+    if (lower === "insightful documentaries") {
+        return "/categories/99?name=Documentary&type=movie";
+    }
+    if (lower === "wild west tales") {
+        return "/categories/37?name=Western&type=movie";
+    }
+    if (lower === "musical journeys") {
+        return "/categories/10402?name=Music&type=movie";
+    }
+    if (lower === "historic wars") {
+        return "/categories/36?name=History&type=movie";
+    }
+    if (lower === "action & adventure") {
+        return "/categories/10759?name=Action%20%26%20Adventure&type=tv";
+    }
+
+    // Default to null for contextual or non-paginated rows (Trending Now, Recently Played, Recommendations, Similar, Airing Today, Known For, etc.)
+    return null;
+};
+
+const MovieRow = ({ title, movies, className, cardClassName, isResume = false, onRemove, seeAllUrl }: MovieRowProps) => {
+    const rowRef = useRef<HTMLDivElement>(null);
+    const config = getHeaderConfig(title);
+    const resolvedSeeAllUrl = seeAllUrl ?? getSeeAllUrl(title);
+
+    const scroll = (direction: "left" | "right") => {
+        if (rowRef.current) {
+            const { scrollLeft, clientWidth } = rowRef.current;
+            const scrollTo = direction === "left" ? scrollLeft - clientWidth : scrollLeft + clientWidth;
+            rowRef.current.scrollTo({ left: scrollTo, behavior: "smooth" });
+        }
+    };
+
+    return (
+        <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className={cn("space-y-2 md:space-y-4 px-4 sm:px-8 md:px-12 group/row relative hover:z-50 transition-all duration-300", className)}
+        >
+            <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3 group/header cursor-pointer select-none">
+                    {config.icon}
+                    <h2 className={cn(
+                        "text-xl md:text-2xl font-black bg-gradient-to-r bg-clip-text text-transparent tracking-tight font-sans transition-all duration-300 group-hover/header:brightness-110",
+                        config.gradient
+                    )}>
+                        {title}
+                    </h2>
+                    {config.badge && (
+                        <span className={cn(
+                            "hidden sm:inline-block px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-widest uppercase transition-all duration-300 group-hover/header:scale-105",
+                            config.badge.bg
+                        )}>
+                            {config.badge.text}
+                        </span>
+                    )}
+                </div>
+                {resolvedSeeAllUrl && (
+                    <Link
+                        href={resolvedSeeAllUrl}
+                        className="text-xs md:text-sm font-semibold text-gray-500 hover:text-white transition-colors flex items-center"
+                    >
+                        See All <ChevronRight className="h-4 w-4 ml-0.5" />
+                    </Link>
+                )}
+            </div>
+
+            <div className="relative group/nav" style={{ overflow: 'visible' }}>
+                <button
+                    onClick={() => scroll("left")}
+                    className="absolute left-2 sm:left-0 sm:-ml-4 md:-ml-6 top-[115px] sm:top-[130px] md:top-[170px] lg:top-[180px] xl:top-[190px] -translate-y-1/2 z-30 w-9 h-9 bg-white/10 hover:bg-accent border border-white/10 hover:border-accent hover:scale-110 text-white hover:text-black backdrop-blur-md rounded-full opacity-0 group-hover/row:opacity-100 transition-all duration-300 flex items-center justify-center cursor-pointer shadow-2xl"
+                >
+                    <ChevronLeft className="h-5 w-5" />
+                </button>
+
+                <div
+                    ref={rowRef}
+                    className="flex items-start space-x-4 overflow-x-auto overflow-y-visible scrollbar-hide px-4 pt-16 -mt-16 pb-[180px] -mb-[180px] md:pt-24 md:-mt-24 md:pb-[240px] md:-mb-[240px] scroll-smooth"
+                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                >
+                    {movies.map((movie, index) => (
+                        <MovieCard
+                            key={`${movie.id}-${movie.media_type}`}
+                            movie={movie}
+                            isResume={isResume}
+                            className={cardClassName}
+                            onRemove={onRemove}
+                            isFirst={index === 0}
+                            isLast={index === movies.length - 1}
+                        />
+                    ))}
+                </div>
+
+                <button
+                    onClick={() => scroll("right")}
+                    className="absolute right-2 sm:right-0 sm:-mr-4 sm:translate-x-0 md:-mr-6 top-[115px] sm:top-[130px] md:top-[170px] lg:top-[180px] xl:top-[190px] -translate-y-1/2 z-30 w-9 h-9 bg-white/10 hover:bg-accent border border-white/10 hover:border-accent hover:scale-110 text-white hover:text-black backdrop-blur-md rounded-full opacity-0 group-hover/row:opacity-100 transition-all duration-300 flex items-center justify-center cursor-pointer shadow-2xl"
+                >
+                    <ChevronRight className="h-5 w-5" />
+                </button>
+            </div>
+        </motion.div>
+    );
+};
+
+export default MovieRow;
